@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
@@ -78,73 +79,15 @@ class MainActivity : ComponentActivity() {
                             )
 
                         }
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(16.dp)
-                                .statusBarsPadding() // Add padding to account for status bar
-                        ) {
-
-                            // Company Header
-                            Text(
-                                text = "Jasslin Technology",
-                                style = androidx.compose.ui.text.TextStyle(
-                                    fontSize = 24.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(redColor)
-                                    .padding(16.dp)
-                            )
-
-                            // Display the selected option
-                            var selectedOption by remember { mutableStateOf("Options") }
-                            DropDown(
-                                options = optionList,
-                                selectedOption = selectedOption,
-                                modifier = Modifier.fillMaxWidth(),
-                                initiallyOpen = true, // Open the dropdown by default
-                                onOptionSelected = { newOption ->
-                                    selectedOption = newOption
-                                }
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            // TextField for custom option
-                            var customOption by remember { mutableStateOf("") }
-                            TextField(
-                                value = customOption,
-                                onValueChange = { customOption = it },
-                                label = { Text("Enter custom option") },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            // Button to submit selected or custom option
-                            Button(
-//                            colors =  ButtonDefaults.buttonColors(
-//                                containerColor = redColor,
-//                                contentColor = Color.White),
-                                onClick = {
-                                    // Display the selected option and the text entered by the user
-                                    println("Selected Option: $selectedOption")
-                                    println("Custom Option: $customOption")
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(4.dp)
-                            ) {
-                                Text("Submit")
+                    ) { values ->
+                        LazyColumn(contentPadding = values) {
+                            items(20) {
+                                ImageCard(
+                                    title = "Bacon ipsum",
+                                    description = "Bacon ipsum dolor amet pork shankle beef andouille ball tip. Meatball corned beef swine, strip steak bacon jerky doner tongue biltong pork loin drumstick sausage hamburger burgdoggen.",
+                                    modifier = Modifier.padding(16.dp)
+                                )
                             }
-                            // Display the selected option and the text entered by the user
-                            Text("Selected Option: $selectedOption")
-                            Text("Custom Option: $customOption")
                         }
                     }
                 }
