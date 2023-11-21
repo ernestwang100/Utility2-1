@@ -79,16 +79,17 @@ class MainActivity : ComponentActivity() {
                             )
 
                         }
-                    ) { values ->
-                        LazyColumn(contentPadding = values) {
-                            items(20) {
-                                ImageCard(
-                                    title = "Bacon ipsum",
-                                    description = "Bacon ipsum dolor amet pork shankle beef andouille ball tip. Meatball corned beef swine, strip steak bacon jerky doner tongue biltong pork loin drumstick sausage hamburger burgdoggen.",
-                                    modifier = Modifier.padding(16.dp)
-                                )
-                            }
+                    ) {
+                        innerPadding ->
+                        Box(modifier = Modifier.padding(innerPadding)) {
+                            LoginScreen(onLoginClicked = { username, password ->
+                                println("Username: $username")
+                                println("Password: $password")
+                            })
+
+//                            OptionsDisplay(optionList)
                         }
+
                     }
                 }
             }
@@ -96,105 +97,5 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-@Composable
-fun DropDown(
-    options: List<String>,
-    selectedOption: String,
-    modifier: Modifier = Modifier,
-    initiallyOpen: Boolean = false,
-    onOptionSelected: (String) -> Unit
-) {
-    var isOpen by remember { mutableStateOf(initiallyOpen) }
-    val alpha = animateFloatAsState(
-        targetValue = if (isOpen) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = 300,
-        )
-    )
-
-    val rotateX = animateFloatAsState(
-        targetValue = if (isOpen) 0f else -90f,
-        animationSpec = tween(
-            durationMillis = 300,
-        )
-    )
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = selectedOption,
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { isOpen = !isOpen }
-            )
-
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "Dropdown Arrow",
-                modifier = Modifier
-                    .clickable { isOpen = !isOpen }
-                    .scale(1f, if (isOpen) -1f else 1f)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .graphicsLayer {
-                    transformOrigin = TransformOrigin(0.5f, 0f)
-                    rotationX = rotateX.value
-                }
-                .alpha(alpha.value)
-        ) {
-            // Display the dropdown items here
-            if (isOpen) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .padding(4.dp)
-                        .shadow(4.dp)
-                ) {
-                    options.forEach { option ->
-                        DropDownMenuItem(
-                            option = option,
-                            onOptionSelected = {
-                                isOpen = false
-                                onOptionSelected(it)
-                            }
-                        )
-                    }
-                }
-            }
-        }
-
-
-    }
-
-
-}
-
-@Composable
-fun DropDownMenuItem(option: String, onOptionSelected: (String) -> Unit) {
-    Text(
-        text = option,
-        fontSize = 20.sp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onOptionSelected(option) }
-            .padding(8.dp)
-    )
-}
 
 
